@@ -2,8 +2,6 @@
 
 import time
 import datetime
-import struct
-import rds
 import besfm
 
 '''
@@ -16,8 +14,6 @@ try:
 except:
     print("Device not found. Quitting.")
     quit()
-
-rdsparse = rds.RDS()
 
 fm.set_power(False)
 fm.set_power(True)
