@@ -45,6 +45,10 @@ class BesFM_Enums(Enum):
     CHAN_SPACING_200KHz = 0
     CHAN_SPACING_100KHz = 1
     CHAN_SPACING_50KHz = 2
+    BAND_87MHz_108MHz = 0
+    BAND_76MHz_107MHz = 1
+    BAND_76MHz_91MHz = 2
+    BAND_64MHz_76MHz = 3
 
 class BesFM:
     def __init__(self):
@@ -106,10 +110,11 @@ class BesFM:
             return False
 
     def set_band(self, band):
-        raise NotImplementedError
+        assert band in BesFM_Enums
+        self._set(BesCmd.SET_FM_BAND.value, band.value)
 
     def get_band(self):
-        raise NotImplementedError
+        return self._get(BesCmd.GET_CURRENT_FM_BAND.value)[0]
 
     def set_rssi_threshold(self, value):
         raise NotImplementedError
