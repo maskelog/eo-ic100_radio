@@ -41,6 +41,11 @@ class BesCmd(Enum): # Enums from decompiled Note10 framework.
     SET_SPIKE_THRES = 12
     SET_DATA_LENGTH = 1
 
+class BesFM_Enums(Enum):
+    CHAN_SPACING_200KHz = 0
+    CHAN_SPACING_100KHz = 1
+    CHAN_SPACING_50KHz = 2
+
 class BesFM:
     def __init__(self):
         self._dev = usb.core.find(idVendor=0x04e8, idProduct=0xa054)
@@ -113,10 +118,11 @@ class BesFM:
         raise NotImplementedError
 
     def set_channel_spacing(self, spacing):
-        raise NotImplementedError
+        assert spacing in BesFM_Enums
+        self._set(BesCmd.SET_CHAN_SPACING.value, spacing.value)
 
     def get_channel_spacing(self):
-        raise NotImplementedError
+        return self._get(BesCmd.GET_CURRENT_SPACING.value)[0]
 
     def set_mute(self, b):
         if b:
