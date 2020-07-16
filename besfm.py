@@ -136,8 +136,17 @@ class BesFM:
         else:
             return False
 
-    def set_seek(self, seek):
-        raise NotImplementedError
+    def _set_seek(self, seek):
+        self._set(BesCmd.SET_SEEK_START.value, seek.value)
+
+    def seek_up(self):
+        self._set_seek(BesCmd.SET_SEEK_UP)
+
+    def seek_down(self):
+        self._set_seek(BesCmd.SET_SEEK_DOWN)
+
+    def seek_stop(self):
+        self._set(BesCmd.SET_SEEK_STOP.value, 0)
 
     def set_channel(self, freq):
         self._set(
