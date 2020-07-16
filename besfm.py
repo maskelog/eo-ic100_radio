@@ -45,6 +45,9 @@ class BesFM:
     def __init__(self):
         self._dev = usb.core.find(idVendor=0x04e8, idProduct=0xa054)
         assert type(self._dev) == usb.core.Device, "Device not found"
+        if self._dev.is_kernel_driver_active(4):
+            self._dev.detach_kernel_driver(4)
+        self._notify_ep = self._dev.get_active_configuration()[4,0][0]
 
     def _set(self, cmd, value):
         self._dev.ctrl_transfer(
@@ -68,6 +71,16 @@ class BesFM:
             0, 0,
             bytearray(12)
         )
+
+    def _wait(self, timeout=None):
+        try:
+            resp = self._notify_ep.read(5, timeout=timeout).tobytes()
+        except usb.core.USBError as e:
+                if e.errno != 110:
+                    raise e
+        else:
+            if resp[0:3] == b'\x01\x00\x08':
+                return True
 
     def set_power(self, b):
         if b:
