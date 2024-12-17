@@ -4,6 +4,8 @@ import ic100_radio_gui
 import tkinter as tk
 import besfm
 import time
+import usb.core
+
 '''
 GUI FM radio control program
 '''
@@ -11,11 +13,14 @@ GUI FM radio control program
 class MainApp(ic100_radio_gui.MainApp):
     def __init__(self, master):
         super().__init__(master)
-        try:
-            self.fm = besfm.BesFM()
-        except:
+        dev = usb.core.find(
+            idVendor=0x04e8,
+            custom_match=lambda x: x.idProduct in [0xa054, 0xa059, 0xa05b]
+        )
+        if dev is None:
             print("Device not found. Quitting.")
             quit()
+        self.fm = besfm.BesFM(dev)
         self.update_power()
         self.volume = tk.IntVar(master, value=6)
         self.freq = 9150

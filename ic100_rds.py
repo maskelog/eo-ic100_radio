@@ -3,17 +3,21 @@
 import time
 import datetime
 import besfm
+import usb.core
 
 '''
 Get rds data from radio.
 Use rdssurveyor -ingrouphexfile [filename] to read data
 '''
 
-try:
-    fm = besfm.BesFM()
-except:
+dev = usb.core.find(
+    idVendor=0x04e8,
+    custom_match=lambda x: x.idProduct in [0xa054, 0xa059, 0xa05b]
+)
+if dev is None:
     print("Device not found. Quitting.")
     quit()
+fm = besfm.BesFM(dev)
 
 fm.set_power(False)
 fm.set_power(True)

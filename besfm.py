@@ -56,9 +56,8 @@ class BesFM_Enums(Enum):
     BAND_64MHz_76MHz = 3
 
 class BesFM:
-    def __init__(self):
-        self._dev = usb.core.find(idVendor=0x04e8, idProduct=0xa054)
-        assert type(self._dev) == usb.core.Device, "Device not found"
+    def __init__(self, dev: usb.core.Device):
+        self._dev = dev
         if self._dev.is_kernel_driver_active(4):
             self._dev.detach_kernel_driver(4)
         self._notify_ep = self._dev.get_active_configuration()[4,0][0]
