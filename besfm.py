@@ -2,7 +2,7 @@ import usb.core
 import struct
 from enum import Enum
 
-class BesCmd(Enum): # Enums from decompiled Note10 framework.
+class BesCmd(Enum): # Enums from decompiled Samsung framework.
     WRITE = 64
     READ = 192
     QUERY = 163
@@ -19,6 +19,9 @@ class BesCmd(Enum): # Enums from decompiled Note10 framework.
     GET_CURRENT_CHANNEL = 13
     GET_CURRENT_SEEKING_DC_THRESHOLD = 14
     GET_CURRENT_SEEKING_SPIKING_THRESHOLD = 15
+    GET_CURRENT_FM_IC_INFO = 16
+    GET_FM_RECORDING_MODE_STATUS = 17
+    GET_FM_PROTOCOL_VERSION = 18
     GET_FM_INDEX = 0
     GET_DATA_LENGTH = 2
     SET = 161
@@ -39,6 +42,8 @@ class BesCmd(Enum): # Enums from decompiled Note10 framework.
     SET_RDS = 10
     SET_DC_THRES = 11
     SET_SPIKE_THRES = 12
+    SET_TEST_MODE = 13
+    SET_RECORDING_MODE = 14
     SET_DATA_LENGTH = 1
 
 class BesFM_Enums(Enum):
