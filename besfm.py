@@ -97,6 +97,8 @@ class BesFM:
                 return True
 
     def set_power(self, b):
+        if self.get_recording():
+            return
         if b:
             self._set(
                 BesCmd.SET_POWER_STATE.value,
@@ -110,6 +112,26 @@ class BesFM:
 
     def get_power(self):
         if self._get(BesCmd.GET_FM_IC_POWER_ON_STATE.value)[0]:
+            return True
+        else:
+            return False
+
+    def set_recording(self, b):
+        if self.get_power():
+            return
+        if b:
+            self._set(
+                BesCmd.SET_RECORDING_MODE.value,
+                BesCmd.SET_FM_IC_POWER_ON.value
+            )
+        else:
+            self._set(
+                BesCmd.SET_RECORDING_MODE.value,
+                BesCmd.SET_FM_IC_POWER_OFF.value
+            )
+
+    def get_recording(self):
+        if self._get(BesCmd.GET_FM_RECORDING_MODE_STATUS.value)[0]:
             return True
         else:
             return False
