@@ -31,7 +31,8 @@ class MainApp(ic100_radio_gui.MainApp):
         self.btn_freq_down_500k['text'] = "-500K"
         self.btn_freq_up_100k['text'] = "+100K"
         self.btn_freq_down_100k['text'] = "-100K"
-        if self.power:
+        self.btn_record['text'] = "Record"
+        if self.power or self.record:
             self.update_frequency()
             self.update_volume()
             self.update_mute()
@@ -39,12 +40,21 @@ class MainApp(ic100_radio_gui.MainApp):
     def cb_power(self):
         if self.power:
             self.fm.set_power(False)
+        elif self.record:
+            self.fm.set_recording(False)
         else:
             self.fm.set_power(True)
             time.sleep(0.2)
+            self.fm.set_volume(6)
             self.reset()
         self.update_power()
 
+    def cb_record(self):
+        self.fm.set_recording(True)
+        time.sleep(0.2)
+        self.fm.set_volume(15)
+        self.reset()
+        self.update_power()
 
     def cb_vol_slider(self, n):
         self.fm.set_volume(int(n))
@@ -68,7 +78,7 @@ class MainApp(ic100_radio_gui.MainApp):
 
     def reset(self):
         self.set_freq(self.freq)
-        self.volume.set(6)
+        self.update_volume()
         self.mute = False
         self.btn_vol_mute['text'] = "Mute"
 
@@ -111,12 +121,16 @@ class MainApp(ic100_radio_gui.MainApp):
 
     def update_power(self):
         self.power = self.fm.get_power()
-        if self.power:
+        self.record = self.fm.get_recording()
+
+        if self.power or self.record:
             self.btn_power_on['text'] = "Power off"
+            self.btn_record['state'] = 'disabled'
             self.vol_slider['state'] = 'normal'
             self.btn_vol_mute['state'] = 'normal'
         else:
             self.btn_power_on['text'] = "Power on"
+            self.btn_record['state'] = 'normal'
             self.label_freq['text'] = f'---.--MHz'
             self.btn_freq_up_1m['state'] = 'disabled'
             self.btn_freq_up_500k['state'] = 'disabled'
@@ -126,6 +140,11 @@ class MainApp(ic100_radio_gui.MainApp):
             self.btn_freq_down_100k['state'] = 'disabled'
             self.vol_slider['state'] = 'disabled'
             self.btn_vol_mute['state'] = 'disabled'
+
+        if self.record:
+            self.btn_record['relief'] = 'sunken'
+        else:
+            self.btn_record['relief'] = 'raised'
 
 
 if __name__ == '__main__':
