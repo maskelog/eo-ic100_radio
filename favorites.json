@@ -1,0 +1,34 @@
+[
+  {
+    "name": "KBS 1FM",
+    "freq": 9730
+  },
+  {
+    "name": "MBC FM4U",
+    "freq": 9190
+  },
+  {
+    "name": "kbs classic fm",
+    "freq": 9310
+  },
+  {
+    "name": "CBS MUSIC",
+    "freq": 9390
+  },
+  {
+    "name": "MBC FM",
+    "freq": 9590
+  },
+  {
+    "name": "SBS LOVE FM",
+    "freq": 10350
+  },
+  {
+    "name": "EBS FM",
+    "freq": 10450
+  },
+  {
+    "name": "Power FM",
+    "freq": 10770
+  }
+]
